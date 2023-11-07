@@ -143,14 +143,14 @@ function getBook(id) {
   return data.find((d) => d.id === id);
 }
 
-// Destructuring
+// DESTRUCTURING
 
 // -- with objects
 const books = getBooks();
 console.log(books);
 
 // Lets get the title and author of book 3
-const { title, author } = books[3];
+const { title, author } = books[3]; // console.log(title, author)
 
 // -- with arrays
 // working with the genres
