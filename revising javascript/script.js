@@ -145,8 +145,15 @@ function getBook(id) {
 
 // Destructuring
 
+// -- with objects
 const books = getBooks();
 console.log(books);
 
 // Lets get the title and author of book 3
 const { title, author } = books[3];
+
+// -- with arrays
+// working with the genres
+// create a vairable called pimary genre
+
+const primary = books[2].genres;
