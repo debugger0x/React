@@ -1,61 +1,82 @@
+import { useState } from "react";
+
 const initialItems = [
-  { id: 1, description: "Study", time: 12, done: false },
-  { id: 2, description: "Exercise", time: 14, done: false },
-  { id: 3, description: "Meditate", time: 14, done: true },
+  { id: 1, description: "Passports", quantity: 2, packed: false },
+  { id: 2, description: "Socks", quantity: 12, packed: false },
+  { id: 3, description: "Tops", quantity: 20, packed: true },
 ];
 
-export default App;
-function App() {
+export default function App() {
   return (
     <div className="app">
       <Logo />
       <Form />
-      <Lists />
+      <PackingList />
       <Stats />
     </div>
   );
 }
 
 function Logo() {
-  return <h1>⌛Tick-Tick⌛</h1>;
+  return <h1> 🌴 Far Away ✈️</h1>;
 }
 function Form() {
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState(11);
+
+  function handleSubmit(event) {
+    event.preventDefault();
+  }
+
   return (
-    <div className="add-form">
-      <h3>
-        <i>With discipline, you can achieve anything. </i>🥷
-      </h3>
-    </div>
+    <form className="add-form" onSubmit={(event) => handleSubmit(event)}>
+      <h3>What do you need for your trip? 😍</h3>
+
+      <select
+        value={quantity}
+        onChange={(event) => setQuantity(Number(event.target.value))}
+      >
+        {Array.from({ length: 20 }, (x, index) => index + 1).map((num) => (
+          <option value={num} key={num}>
+            {num}
+          </option>
+        ))}
+      </select>
+      <input
+        type="text"
+        placeholder="Item..."
+        value={description}
+        onChange={(event) => setDescription(event.target.value)}
+      />
+      <button>Add</button>
+    </form>
   );
 }
-
-function Lists() {
+function PackingList() {
   return (
     <div className="list">
       <ul>
-        {initialItems.map((task) => (
-          <Task task={task} />
+        {initialItems.map((el) => (
+          <Item item={el} key={el.id} />
         ))}
       </ul>
     </div>
   );
 }
-
-function Task({ task }) {
+function Item({ item }) {
   return (
     <li>
-      <span style={task.done ? { textDecoration: "line-through" } : {}}>
-        {task.description} by{task.time}
+      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
+        {item.quantity} {item.description}
       </span>
-      <span>✖️</span>
+      <button>✖️</button>
     </li>
   );
 }
-
 function Stats() {
   return (
     <footer className="stats">
-      <em>You have completed X tasks</em>
+      You have x items on your list, and you already packed X (X%)
     </footer>
   );
 }
