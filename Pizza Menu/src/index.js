@@ -49,12 +49,41 @@ const pizzaData = [
 function App() {
   return (
     <div>
-      <h1>Hello React</h1>
+      <Header />
+      <Menu />
+      <Footer />
+    </div>
+  );
+}
+
+function Header() {
+  return <h1>Fast React Pizza Co.</h1>;
+}
+function Menu() {
+  return (
+    <div>
       <Pizza />
       <Pizza />
     </div>
   );
 }
+function Footer() {
+  const hour = new Date().getHours();
+  const open = 10;
+  const close = 22;
+  const isOpen = hour >= open && hour <= close;
+  console.log(hour);
+
+  return (
+    <footer>
+      {" "}
+      {isOpen
+        ? `We are open until ${close}:00!`
+        : `We are close until ${open}:00!`}
+    </footer>
+  );
+}
+// function Header () {}
 
 function Pizza() {
   return (
