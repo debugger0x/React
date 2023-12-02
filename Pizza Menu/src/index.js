@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./index.css";
 
 const pizzaData = [
   {
@@ -48,7 +49,7 @@ const pizzaData = [
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <Header />
       <Menu />
       <Footer />
@@ -57,26 +58,57 @@ function App() {
 }
 
 function Header() {
-  return <h1>Fast React Pizza Co.</h1>;
-}
-function Menu() {
+  // const style = { color: "red", fontSize: "48px", textTransform: "uppercase" };
   return (
-    <div>
-      <Pizza />
-      <Pizza />
-    </div>
+    <header className="header">
+      <h1>Fast React Pizza Co.</h1>;
+    </header>
   );
 }
+function Menu() {
+  const pizzas = pizzaData;
+  // const pizzas = 0;
+  return (
+    <main className="menu">
+      <h2>Our Menu</h2>
+      <p>Authentic Italian cusine.</p>
+
+      {pizzas ? (
+        <ul className="pizzas">
+          {pizzaData.map((pizza) => (
+            <Pizza pizzaObj={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      ) : (
+        <h3>
+          There is nothing available now on the menu, please check back later!
+        </h3>
+      )}
+    </main>
+  );
+}
+
+function Pizza({ pizzaObj }) {
+  return (
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+      <div>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
+      </div>
+    </li>
+  );
+}
+
 function Footer() {
   const hour = new Date().getHours();
   const open = 10;
   const close = 22;
   const isOpen = hour >= open && hour <= close;
-  console.log(hour);
 
   return (
     <footer>
-      {" "}
       {isOpen
         ? `We are open until ${close}:00!`
         : `We are close until ${open}:00!`}
@@ -84,16 +116,6 @@ function Footer() {
   );
 }
 // function Header () {}
-
-function Pizza() {
-  return (
-    <div>
-      <h2>Pizza</h2>
-      <img src="pizzas/spinaci.jpg" alt="pizza" />
-      <p>Tomato, mozarella, spinach, and ricotta cheese</p>
-    </div>
-  );
-}
 
 // select the root
 const root = ReactDOM.createRoot(document.getElementById("root"));
