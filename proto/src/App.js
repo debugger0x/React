@@ -15,20 +15,17 @@ export default function App() {
 
   const prevFunc = () => {
     if (step <= 1) return;
-
     stepController((e) => e - 1);
-    console.log(step);
   };
 
   const nextFunc = () => {
     if (step >= messages.length) return;
     stepController((e) => e + 1);
-    console.log(step);
   };
 
   return (
     <>
-      <button className="close" onClick={() => openController(!open)}>
+      <button className="close" onClick={() => openController((e) => !e)}>
         &times;
       </button>
       {open ? (
