@@ -20,9 +20,11 @@ export function PackingBody() {
 function PackingList({ item }) {
   return (
     <li>
-      {`${item.quantity}
+      <span style={item.packed ? { textDecoration: 'line-through' } : {}}>
+        {`${item.quantity}
       ${item.description}
-    `}
+      `}
+      </span>
       <button>✖️</button>
     </li>
   );
