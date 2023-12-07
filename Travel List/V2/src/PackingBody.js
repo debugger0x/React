@@ -9,7 +9,7 @@ export function PackingBody() {
     <div className="list">
       <ul>
         {initialItems.map((el) => (
-          <PackingList item={el} />
+          <PackingList item={el} key={el.id} />
         ))}
       </ul>
       <div>Footer</div>
@@ -22,7 +22,7 @@ function PackingList({ item }) {
     <li>
       <span style={item.packed ? { textDecoration: 'line-through' } : {}}>
         {`${item.quantity}
-      ${item.description}
+      ${item.description} 
       `}
       </span>
       <button>✖️</button>

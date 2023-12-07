@@ -12,18 +12,21 @@ export function Form() {
 
   const handleFormSubmission = (e) => {
     e.preventDefault();
+
+    if (!text) return;
+    const newItem = [text, quantity];
+    setQuantity(1);
+    setText('');
+
+    console.log(newItem);
   };
 
   return (
-    <form
-      className="add-form"
-      onChange={(e) => setQuantity(e.target.value)}
-      onSubmit={handleFormSubmission}
-    >
+    <form className="add-form" onSubmit={handleFormSubmission}>
       <span>What will you need for school today? 🤔</span>
-      <select value={quantity}>
+      <select value={quantity} onChange={(e) => setQuantity(e.target.value)}>
         {Array.from({ length: 20 }, (x, i) => i + 1).map((num) => (
-          <option>{num}</option>
+          <option key={num}>{num}</option>
         ))}
       </select>
       <input
