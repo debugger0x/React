@@ -25,6 +25,8 @@ export default function App() {
     );
   }
   function clearList() {
+    const ans = window.confirm("Are you sure you want to clear all items?");
+    if (!ans) return;
     setItems([]);
   }
 
