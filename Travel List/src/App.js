@@ -8,6 +8,8 @@ const initialItems = [
 
 export default function App() {
   const [items, setItems] = useState([]);
+  const numItems = items.length;
+  const numPacked = items.filter((items) => items.packed).length;
 
   function handleAddingItems(item) {
     setItems((el) => [...el, item]);
@@ -32,7 +34,7 @@ export default function App() {
         onDeleteItems={handleDeleteItems}
         onToggleItems={handleToogleItem}
       />
-      <Stats />
+      <Stats numItems={numItems} numPacked={numPacked} />
     </div>
   );
 }
@@ -80,10 +82,24 @@ function Form({ onAddItems }) {
   );
 }
 function PackingList({ items, onDeleteItems, onToggleItems }) {
+  const [sortBy, setSortBy] = useState("input");
+
+  let sortedItems;
+
+  if (sortBy === "input") sortedItems = items;
+  if (sortBy === "description")
+    sortedItems = items
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description));
+  if (sortBy === "packed")
+    sortedItems = items
+      .slice()
+      .sort((a, b) => Number(a.packed) - Number(b.packed));
+
   return (
     <div className="list">
       <ul>
-        {items.map((item) => (
+        {sortedItems.map((item) => (
           <Items
             items={item}
             onDeleteItems={onDeleteItems}
@@ -92,6 +108,14 @@ function PackingList({ items, onDeleteItems, onToggleItems }) {
           />
         ))}
       </ul>
+      <div className="actions">
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="input">Sort by the input order</option>
+          <option value="description">Sort Alphabetically</option>
+          <option value="packed">Sort by packed status</option>
+        </select>
+        <button>Clear list</button>
+      </div>
     </div>
   );
 }
@@ -113,10 +137,14 @@ function Items({ items, onDeleteItems, onToggleItems }) {
     </li>
   );
 }
-function Stats() {
+function Stats({ numItems, numPacked }) {
+  const percentage = Math.round((numPacked / numItems) * 100);
   return (
     <footer className="stats">
-      You have X items on your list and you already packed X
+      {percentage == 100
+        ? "You got everything. Ready for takeoff ✈️"
+        : `      You have ${numItems} items on your list and you already packed ${numPacked} Items.${" "}
+      (${percentage}%)`}
     </footer>
   );
 }
