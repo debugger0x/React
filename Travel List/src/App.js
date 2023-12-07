@@ -7,7 +7,7 @@ const initialItems = [
 ];
 
 export default function App() {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(initialItems);
   const numItems = items.length;
   const numPacked = items.filter((items) => items.packed).length;
 
@@ -24,6 +24,9 @@ export default function App() {
       )
     );
   }
+  function clearList() {
+    setItems([]);
+  }
 
   return (
     <div className="app">
@@ -33,6 +36,7 @@ export default function App() {
         items={items}
         onDeleteItems={handleDeleteItems}
         onToggleItems={handleToogleItem}
+        onClearList={clearList}
       />
       <Stats numItems={numItems} numPacked={numPacked} />
     </div>
@@ -81,7 +85,7 @@ function Form({ onAddItems }) {
     </form>
   );
 }
-function PackingList({ items, onDeleteItems, onToggleItems }) {
+function PackingList({ items, onDeleteItems, onToggleItems, onClearList }) {
   const [sortBy, setSortBy] = useState("input");
 
   let sortedItems;
@@ -114,7 +118,7 @@ function PackingList({ items, onDeleteItems, onToggleItems }) {
           <option value="description">Sort Alphabetically</option>
           <option value="packed">Sort by packed status</option>
         </select>
-        <button>Clear list</button>
+        <button onClick={() => onClearList()}>Clear list</button>
       </div>
     </div>
   );
