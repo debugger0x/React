@@ -4,12 +4,12 @@ const initialItems = [
   { id: 3, description: 'Charger', quantity: 3, packed: true },
 ];
 
-export function PackingBody() {
+export function PackingBody({ items }) {
   return (
     <div className="list">
       <ul>
-        {initialItems.map((el) => (
-          <PackingList item={el} key={el.id} />
+        {items.map((el) => (
+          <PackingList item={el} key={el.id} items={items} />
         ))}
       </ul>
       <div>Footer</div>

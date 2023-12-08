@@ -1,12 +1,6 @@
 import { useState } from 'react';
 
-const initialItems = [
-  { id: 1, description: 'Passports', quantity: 2, packed: false },
-  { id: 2, description: 'Socks', quantity: 12, packed: false },
-  { id: 3, description: 'Charger', quantity: 3, packed: true },
-];
-
-export function Form() {
+export function Form({ addNewItem }) {
   const [quantity, setQuantity] = useState(1);
   const [text, setText] = useState('');
 
@@ -14,11 +8,17 @@ export function Form() {
     e.preventDefault();
 
     if (!text) return;
-    const newItem = [text, quantity];
+    const newItem = {
+      id: Date.now(),
+      description: text,
+      quantity,
+      packed: false,
+    };
+
+    addNewItem(newItem);
+
     setQuantity(1);
     setText('');
-
-    console.log(newItem);
   };
 
   return (
