@@ -1,8 +1,24 @@
+import { useState } from 'react';
+
 export function PackingBody({ items, deleteItem, checkItem }) {
+  const [sorting, setSorting] = useState('input');
+
+  let sortedItems;
+
+  if (sorting === 'input') sortedItems = items;
+  if (sorting === 'description')
+    sortedItems = items
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description));
+  if (sorting === 'packed')
+    sortedItems = items
+      .slice()
+      .sort((a, b) => Number(a.packed) - Number(b.packed));
+
   return (
     <div className="list">
       <ul>
-        {items.map((el) => (
+        {sortedItems.map((el) => (
           <PackingList
             item={el}
             key={el.id}
@@ -12,7 +28,13 @@ export function PackingBody({ items, deleteItem, checkItem }) {
           />
         ))}
       </ul>
-      <div>Footer</div>
+      <div className="actions">
+        <select value={sorting} onChange={(e) => setSorting(e.target.value)}>
+          <option value="input">Sort by input order</option>
+          <option value="description">Sort by description</option>
+          <option value="packed">Sort by packed status</option>
+        </select>
+      </div>
     </div>
   );
 }
