@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export function PackingBody({ items, deleteItem, checkItem }) {
+export function PackingBody({ items, deleteItem, checkItem, clearItems }) {
   const [sorting, setSorting] = useState('input');
 
   let sortedItems;
@@ -34,6 +34,7 @@ export function PackingBody({ items, deleteItem, checkItem }) {
           <option value="description">Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
+        <button onClick={() => clearItems()}>Clear all Items ❌</button>
       </div>
     </div>
   );

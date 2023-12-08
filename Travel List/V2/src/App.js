@@ -27,6 +27,13 @@ export default function App() {
       el.map((e) => (e.id === id ? { ...e, packed: !e.packed } : e))
     );
   }
+
+  function handleClearingItems() {
+    const sure = window.confirm('Do you want to clear all items?');
+
+    if (sure) setNewItem([]);
+  }
+
   //
   return (
     <div className="app">
@@ -36,6 +43,7 @@ export default function App() {
         items={items}
         deleteItem={handleDeletingItems}
         checkItem={handlePacking}
+        clearItems={handleClearingItems}
       />
       <Stats items={items} />
     </div>
