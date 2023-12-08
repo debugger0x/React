@@ -14,7 +14,7 @@ export default function App() {
   const [items, setNewItem] = useState([]);
 
   function handleAddingItems(item) {
-    setNewItem((it) => items, item);
+    setNewItem((items) => [...items, item]);
     console.log([...items]);
   }
   //
