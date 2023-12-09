@@ -22,6 +22,7 @@ export function FreindList({
 
 function ListFriends({ friend, setSelectFriendFunction, selectedFriend }) {
   const isSelected = selectedFriend.id === friend.id;
+  console.log(isSelected);
 
   return (
     <li className={isSelected ? "selected" : ""}>
@@ -44,7 +45,7 @@ function ListFriends({ friend, setSelectFriendFunction, selectedFriend }) {
         className="button"
         onClick={() => setSelectFriendFunction(friend)}
       >
-        Select
+        {isSelected ? "Close" : "Select"}
       </button>
     </li>
   );
