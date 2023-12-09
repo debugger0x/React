@@ -59,10 +59,15 @@ export default function App() {
 
   function setSelectFriendFunction(friend) {
     console.log("This is the selected ID", selectFriend.id, friend.id);
-    // setSelectFriend(friend);
+
     setSelectFriend((selectFriend) =>
       selectFriend.id === friend.id ? false : friend
     );
+    setShowAddFriend(null);
+  }
+
+  function handleSplitBill(bill) {
+    setSelectFriend((el) => (el.balance = bill));
   }
 
   return (
@@ -83,7 +88,10 @@ export default function App() {
           {showAddFriend ? "Close" : "Add friend"}
         </button>
       </div>
-      <FormSplitBill selectedFriend={selectFriend} />
+      <FormSplitBill
+        selectedFriend={selectFriend}
+        handleSplitBill={handleSplitBill}
+      />
     </div>
   );
 }
