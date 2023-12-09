@@ -1,29 +1,26 @@
 import { useState } from "react";
 
-export function AddFriendForm({ addFriends }) {
+export function AddFriendForm({ addFriends, toggleAddFriendForm }) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("https://i.pravatar.cc/48");
 
   function handleSubmission(e) {
     e.preventDefault();
     if (!name) return;
-    let confirm;
-    if (image === "https://i.pravatar.cc/48") {
-      confirm = window.confirm(
-        "Please enter an image or click okay to continue"
-      );
-    }
+    const id = crypto.randomUUID();
 
     const newFriend = {
       name,
-      confirm,
+      image: `${image}?=${id}`,
       balance: 0,
-      id: Date.now(),
+      id,
     };
 
     addFriends(newFriend);
     setName("");
     setImage("https://i.pravatar.cc/48");
+
+    toggleAddFriendForm((el) => false);
   }
 
   return (

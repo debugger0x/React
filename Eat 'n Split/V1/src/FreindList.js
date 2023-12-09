@@ -1,17 +1,32 @@
-export function FreindList({ friendList }) {
+import { useState } from "react";
+
+export function FreindList({
+  friendList,
+  setSelectFriendFunction,
+  selectedFriend,
+}) {
   const friends = friendList;
   return (
     <ul>
       {friends.map((friend) => (
-        <ListFriends friend={friend} key={friend.id} />
+        <ListFriends
+          friend={friend}
+          key={friend.id}
+          setSelectFriendFunction={setSelectFriendFunction}
+          selectedFriend={selectedFriend}
+        />
       ))}
     </ul>
   );
 }
 
-function ListFriends({ friend }) {
+function ListFriends({ friend, setSelectFriendFunction, selectedFriend }) {
+  const isSelected = selectedFriend.id === friend.id;
+  console.log(selectedFriend);
+  console.log(isSelected);
+
   return (
-    <li>
+    <li className={selectedFriend ? "selected" : ""}>
       <img src={friend.image} alt={friend.name} />
       <h3>{friend.name}</h3>
 
@@ -25,9 +40,14 @@ function ListFriends({ friend }) {
           {friend.name} owes you ${Math.abs(friend.balance)}
         </p>
       )}
-      {friend.balance == 0 && <p>You and {friend.name} are even</p>}
+      {friend.balance === 0 && <p>You and {friend.name} are even</p>}
 
-      <button className="button">Select</button>
+      <button
+        className="button"
+        onClick={() => setSelectFriendFunction(friend)}
+      >
+        Select
+      </button>
     </li>
   );
 }

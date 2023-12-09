@@ -25,7 +25,8 @@ import { FreindList } from "./FreindList";
 // ];
 
 export default function App() {
-  const [showAddFriend, setShowAddFriend] = useState(false);
+  const [selectFriend, setSelectFriend] = useState(false);
+  const [showAddFriend, setShowAddFriend] = useState(null);
   const [initialFriends, setInitialFriends] = useState([
     {
       id: 118836,
@@ -47,6 +48,7 @@ export default function App() {
     },
   ]);
 
+  // functions
   function toogleAddFriend() {
     setShowAddFriend((el) => !el);
   }
@@ -55,16 +57,29 @@ export default function App() {
     setInitialFriends((el) => [...el, newFriend]);
   }
 
+  function setSelectFriendFunction(friend) {
+    setSelectFriend(friend.name);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
-        <FreindList friendList={initialFriends} />
-        {showAddFriend && <AddFriendForm addFriends={handleAddFriend} />}
+        <FreindList
+          friendList={initialFriends}
+          setSelectFriendFunction={setSelectFriendFunction}
+          selectedFriend={initialFriends}
+        />
+        {showAddFriend && (
+          <AddFriendForm
+            addFriends={handleAddFriend}
+            toggleAddFriendForm={setShowAddFriend}
+          />
+        )}
         <button className="button" onClick={toogleAddFriend}>
           {showAddFriend ? "Close" : "Add friend"}
         </button>
       </div>
-      <FormSplitBill />
+      <FormSplitBill selectFriend={selectFriend} />
     </div>
   );
 }
