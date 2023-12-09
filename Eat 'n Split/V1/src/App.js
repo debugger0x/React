@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AddFriendForm } from "./AddFriendForm";
 import { FormSplitBill } from "./FormSplitBill";
 import { FreindList } from "./FreindList";
@@ -24,13 +25,20 @@ const initialFriends = [
 ];
 
 export default function App() {
+  const [showAddFriend, setShowAddFriend] = useState(false);
+
+  function toogleAddFriend() {
+    setShowAddFriend((el) => !el);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
         <FreindList />
-
-        <AddFriendForm />
-        <button className="button">Add</button>
+        {showAddFriend && <AddFriendForm />}
+        <button className="button" onClick={toogleAddFriend}>
+          {showAddFriend ? "Close" : "Add friend"}
+        </button>
       </div>
       <FormSplitBill />
     </div>
