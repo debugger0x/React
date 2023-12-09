@@ -1,11 +1,20 @@
 import { useState } from "react";
 
-export function AddFriendForm() {
+export function AddFriendForm({ addFriends }) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("https://i.pravatar.cc/48");
 
   function handleSubmission(e) {
     e.preventDefault();
+    if (!name) return;
+
+    const newFriend = {
+      name,
+      image,
+      balance: 0,
+    };
+
+    addFriends(newFriend);
   }
 
   return (
@@ -26,7 +35,9 @@ export function AddFriendForm() {
         placeholder="Link to your friends picture here"
       />
 
-      <button className="button">Add</button>
+      <button className="button" onClick={handleSubmission}>
+        Add
+      </button>
     </form>
   );
 }
