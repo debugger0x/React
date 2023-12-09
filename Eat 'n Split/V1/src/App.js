@@ -58,8 +58,11 @@ export default function App() {
   }
 
   function setSelectFriendFunction(friend) {
-    setSelectFriend(friend);
-    console.log(friend);
+    console.log("This is the selected ID", selectFriend.id, friend.id);
+    // setSelectFriend(friend);
+    setSelectFriend((selectFriend) =>
+      selectFriend.id === friend.id ? false : friend
+    );
   }
 
   return (
