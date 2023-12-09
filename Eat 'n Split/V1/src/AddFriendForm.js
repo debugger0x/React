@@ -7,14 +7,23 @@ export function AddFriendForm({ addFriends }) {
   function handleSubmission(e) {
     e.preventDefault();
     if (!name) return;
+    let confirm;
+    if (image === "https://i.pravatar.cc/48") {
+      confirm = window.confirm(
+        "Please enter an image or click okay to continue"
+      );
+    }
 
     const newFriend = {
       name,
-      image,
+      confirm,
       balance: 0,
+      id: Date.now(),
     };
 
     addFriends(newFriend);
+    setName("");
+    setImage("https://i.pravatar.cc/48");
   }
 
   return (
