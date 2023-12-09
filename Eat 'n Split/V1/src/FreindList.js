@@ -22,11 +22,9 @@ export function FreindList({
 
 function ListFriends({ friend, setSelectFriendFunction, selectedFriend }) {
   const isSelected = selectedFriend.id === friend.id;
-  console.log(selectedFriend);
-  console.log(isSelected);
 
   return (
-    <li className={selectedFriend ? "selected" : ""}>
+    <li className={isSelected ? "selected" : ""}>
       <img src={friend.image} alt={friend.name} />
       <h3>{friend.name}</h3>
 

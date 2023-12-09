@@ -58,7 +58,8 @@ export default function App() {
   }
 
   function setSelectFriendFunction(friend) {
-    setSelectFriend(friend.name);
+    setSelectFriend(friend);
+    console.log(friend);
   }
 
   return (
@@ -67,7 +68,7 @@ export default function App() {
         <FreindList
           friendList={initialFriends}
           setSelectFriendFunction={setSelectFriendFunction}
-          selectedFriend={initialFriends}
+          selectedFriend={selectFriend}
         />
         {showAddFriend && (
           <AddFriendForm
@@ -79,7 +80,7 @@ export default function App() {
           {showAddFriend ? "Close" : "Add friend"}
         </button>
       </div>
-      <FormSplitBill selectFriend={selectFriend} />
+      <FormSplitBill selectedFriend={selectFriend} />
     </div>
   );
 }

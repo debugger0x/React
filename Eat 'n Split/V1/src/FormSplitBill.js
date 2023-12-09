@@ -1,24 +1,22 @@
-export function FormSplitBill({ selectFriend }) {
-  const friend = selectFriend === "" ? "X" : selectFriend;
-
+export function FormSplitBill({ selectedFriend }) {
   return (
-    selectFriend && (
+    selectedFriend.name && (
       <form className="form-split-bill">
-        <h2>Split a bill with {friend}</h2>
+        <h2>Split a bill with {selectedFriend.name}</h2>
 
         <label>💰 Bill </label>
         <input type="text" />
 
-        <label>🫵 Your expense</label>
+        <label>🧍 Your expense</label>
         <input type="text" />
 
-        <label>🧒 {friend}'s expense</label>
+        <label>👫 {selectedFriend.name}'s expense</label>
         <input type="text" disabled />
 
         <label> 💵Who is paying the bill?</label>
         <select>
           <option value="user">You</option>
-          <option value="friend">{friend}</option>
+          <option value="friend">{selectedFriend.name}</option>
         </select>
 
         <button className="button">Split bill</button>
