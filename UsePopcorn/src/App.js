@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const tempMovieData = [
   {
@@ -49,11 +49,43 @@ const tempWatchedData = [
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+const key = "4f20cf25";
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
+  const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState(tempWatchedData);
   const [isOpen2, setIsOpen2] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingError, setLoadingError] = useState("");
+  const query = "Jackie Chan";
+
+  useEffect(function () {
+    async function fetchMovies() {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `http://www.omdbapi.com/?apikey=${key}&s=${query}`
+        );
+
+        if (!response.ok)
+          throw new Error("Something went wrong with fetching movies");
+
+        const data = await response.json();
+
+        if (data.Response === "False") {
+          throw new Error("Result not found");
+        }
+
+        setMovies(data.Search);
+      } catch (err) {
+        setLoadingError("Error fetching data");
+        console.error(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchMovies();
+  }, []);
 
   return (
     <>
@@ -67,7 +99,12 @@ export default function App() {
       {/* main component */}
       <Main>
         <Box>
-          <MovieList movies={movies} />
+          {isLoading && !loadingError && <Loader />}
+          {loadingError && <Message message={"Error fetching data"} />}
+          {!isLoading && !loadingError && <MovieList movies={movies} />}
+
+          {/* isLoading ? <Loader /> : <MovieList movies={movies
+         /> */}
         </Box>
 
         <Box>
@@ -77,6 +114,18 @@ export default function App() {
       </Main>
     </>
   );
+}
+
+function Message({ message }) {
+  return (
+    <p className="error">
+      <span>⛔</span> {message}
+    </p>
+  );
+}
+
+function Loader() {
+  return <p className="loader">searching</p>;
 }
 
 function NavBar({ children }) {
