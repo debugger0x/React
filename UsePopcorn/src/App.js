@@ -57,42 +57,53 @@ export default function App() {
   const [isOpen2, setIsOpen2] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState("");
-  const query = "Jackie Chan";
+  const [query, setQuery] = useState("");
 
-  useEffect(function () {
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        const response = await fetch(
-          `http://www.omdbapi.com/?apikey=${key}&s=${query}`
-        );
+  const tempQuery = "thor";
 
-        if (!response.ok)
-          throw new Error("Something went wrong with fetching movies");
+  useEffect(
+    function () {
+      async function fetchMovies() {
+        try {
+          setLoadingError("");
+          setIsLoading(true);
+          const response = await fetch(
+            `http://www.omdbapi.com/?apikey=${key}&s=${query}`
+          );
 
-        const data = await response.json();
+          if (!response.ok)
+            throw new Error("Something went wrong with fetching movies");
 
-        if (data.Response === "False") {
-          throw new Error("Result not found");
+          const data = await response.json();
+
+          if (data.Response === "False") {
+            throw new Error("Result not found");
+          }
+
+          setMovies(data.Search);
+        } catch (err) {
+          setLoadingError("Error fetching data");
+          console.error(err.message);
+        } finally {
+          setIsLoading(false);
         }
-
-        setMovies(data.Search);
-      } catch (err) {
-        setLoadingError("Error fetching data");
-        console.error(err.message);
-      } finally {
-        setIsLoading(false);
       }
-    }
-    fetchMovies();
-  }, []);
+      if (query.length < 3) {
+        setMovies([]);
+        setLoadingError("");
+        return;
+      }
+      fetchMovies();
+    },
+    [query]
+  );
 
   return (
     <>
       {/* navbar component */}
       <NavBar>
         <Logo />
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <Numresults movies={movies} />
       </NavBar>
 
@@ -102,9 +113,6 @@ export default function App() {
           {isLoading && !loadingError && <Loader />}
           {loadingError && <Message message={"Error fetching data"} />}
           {!isLoading && !loadingError && <MovieList movies={movies} />}
-
-          {/* isLoading ? <Loader /> : <MovieList movies={movies
-         /> */}
         </Box>
 
         <Box>
@@ -149,8 +157,8 @@ function Logo() {
   );
 }
 
-function Search() {
-  const [query, setQuery] = useState("");
+function Search({ query, setQuery }) {
+  // const [query, setQuery] = useState("No way");
 
   return (
     <input
