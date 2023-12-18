@@ -54,7 +54,7 @@ const key = "4f20cf25";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState([]);
   const [isOpen2, setIsOpen2] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState("");
@@ -67,6 +67,10 @@ export default function App() {
 
   function handleCloseMovie() {
     setSeletedId(null);
+  }
+
+  function handleAddWatched(movie) {
+    setWatched((watched) => [...watched, movie]);
   }
 
   useEffect(
@@ -129,6 +133,7 @@ export default function App() {
           {selectedId ? (
             <SelectedMovie
               selectedId={selectedId}
+              handleAddWatched={handleAddWatched}
               handleCloseMovie={handleCloseMovie}
             />
           ) : (
@@ -236,8 +241,9 @@ function Listmovies({ movie, handleSelectMovie }) {
   );
 }
 
-function SelectedMovie({ selectedId, handleCloseMovie }) {
+function SelectedMovie({ handleAddWatched, selectedId, handleCloseMovie }) {
   const [movie, setMovie] = useState({});
+  const [userRating, setUserRating] = useState("");
 
   const {
     Title: title,
@@ -251,6 +257,19 @@ function SelectedMovie({ selectedId, handleCloseMovie }) {
     Director: director,
     Genre: genre,
   } = movie;
+
+  function handleAdd() {
+    const newMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: runtime.split(" ").at(0),
+    };
+    handleAddWatched(newMovie);
+    handleCloseMovie();
+  }
 
   useState(
     function () {
@@ -285,7 +304,15 @@ function SelectedMovie({ selectedId, handleCloseMovie }) {
       </header>
       <section>
         <div className="rating">
-          <StarRating size={20} maxRating={10} />
+          <StarRating size={20} maxRating={10} onSetRating={setUserRating} />
+
+          {userRating > 0 ? (
+            <button className="btn-add" onClick={handleAdd}>
+              Add to list
+            </button>
+          ) : (
+            ""
+          )}
         </div>
         <p>
           <em>{plot}</em>
@@ -339,7 +366,7 @@ function WatchedMoviesList({ watched }) {
 function ListWatchedMovie({ movie }) {
   return (
     <li>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
+      <img src={movie.poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
         <p>
