@@ -62,7 +62,7 @@ export default function App() {
         <Search />
         <NumResults movies={movies} />
       </NavBar>
-      <main className="main">
+      <Main>
         <Box>
           <MovieList movies={movies} />
         </Box>
@@ -70,7 +70,8 @@ export default function App() {
           <WatchedSummary watched={watched} />
           <WatchedMovieList watched={watched} />
         </Box>
-      </main>
+        {/* </main> */}
+      </Main>
     </>
   );
 }
@@ -114,8 +115,11 @@ function NumResults({ movies }) {
   );
 }
 
-/// MAIN ///
+function Main({ children }) {
+  return <main className="main">{children}</main>;
+}
 
+/// MAIN ///
 function MovieList({ movies }) {
   return (
     <ul className="list">
