@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const containerStyle = {
   display: "flex",
@@ -10,34 +11,42 @@ const starContainerStyle = {
   display: "flex",
 };
 
-const textStyle = {
-  lineHeight: "0",
-  margin: "1",
+StarRating.propTypes = {
+  maxRating: PropTypes.number,
+  color: PropTypes.string,
+  size: PropTypes.number,
 };
 
-const starStyle = {
-  width: "40px",
-  height: "48px",
-  display: "block",
-  cursor: "pointer",
-};
+export function StarRating({
+  maxRating = 5,
+  color = "#fcc419",
+  size = 48,
+  className,
+  onSetRating,
+}) {
+  const textStyle = {
+    lineHeight: "0",
+    margin: "1",
+    color: color,
+    fontSize: `${size / 1.5}px`,
+  };
 
-export function StarRating({ maxRating = 5 }) {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
 
   function changeSelectedRating(newId) {
     setRating(Number(newId));
+    onSetRating(Number(newId));
   }
   function enterHoverStar(newId) {
     setHoverRating(newId);
   }
-  function leaveHoverStar(newId) {
+  function leaveHoverStar() {
     setHoverRating(0);
   }
 
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className={className}>
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }, (x, i) => (
           <span>
@@ -51,6 +60,8 @@ export function StarRating({ maxRating = 5 }) {
               which={hoverRating ? hoverRating : rating}
               full={hoverRating ? hoverRating >= i + 1 : rating >= i + 1}
               rating={rating}
+              color={color}
+              size={size}
             />
           </span>
         ))}
@@ -65,14 +76,20 @@ export function StarRating({ maxRating = 5 }) {
 
 function Star({
   full,
-  which,
-  rating,
-  hoverRating,
   num,
   onClickStar,
   onHoverStarEnter,
   onHoverStarLeave,
+  color,
+  size,
 }) {
+  const starStyle = {
+    width: `${size}px`,
+    height: `${size}px`,
+    display: "block",
+    cursor: "pointer",
+  };
+
   return (
     <span role="button" style={starStyle}>
       {/* {hoverRating ? hoverRating >= num : } */}
@@ -81,11 +98,11 @@ function Star({
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
-          fill="#000"
+          fill={color}
           onClick={() => onClickStar(num)}
           onMouseEnter={() => onHoverStarEnter(num)}
           onMouseLeave={() => onHoverStarLeave()}
-          stroke="#000"
+          stroke={color}
         >
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
@@ -97,7 +114,7 @@ function Star({
           onClick={() => onClickStar(num)}
           onMouseEnter={() => onHoverStarEnter(num)}
           onMouseLeave={() => onHoverStarLeave()}
-          stroke="#000"
+          stroke={color}
         >
           <path
             strokeLinecap="round"
